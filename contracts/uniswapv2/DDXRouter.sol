@@ -116,7 +116,7 @@ contract DDXRouter is IUniswapV2Router02,Ownable {
             amountBNBMin
         );
         address pair = UniswapV2Library.pairFor(factory, token, WBNB);
-        TransferHelper.safeTransferFrom(token, msg.sender, pair, amountTokenDesired);
+        TransferHelper.safeTransferFrom(token, msg.sender, pair, amountBNB);
         IWBNB(WBNB).deposit{value: amountBNB}();
         assert(IWBNB(WBNB).transfer(pair, amountBNB));
         liquidity = IUniswapV2Pair(pair).mint(to);
