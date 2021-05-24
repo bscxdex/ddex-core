@@ -104,7 +104,7 @@ contract UniswapV2Pair is UniswapV2ERC20 {
                 if (rootK > rootKLast) {
                     uint numerator = totalSupply.mul(rootK.sub(rootKLast));
                     // uint denominator = rootK.mul(2).add(rootKLast);
-                    uint denominator = rootK.mul(9).wdiv(11).add(rootKLast);
+                    uint denominator = rootK.wdiv(3).wmul(2).add(rootKLast);
                     uint liquidity = numerator / denominator;
 
                     if (liquidity > 0) {
@@ -112,7 +112,7 @@ contract UniswapV2Pair is UniswapV2ERC20 {
                         if(repurchaseTo==address(0)){
                             _mint(feeTo, liquidity);
                         }else{
-                            uint repurchaseAmount = liquidity.mul(9).wdiv(11);
+                            uint repurchaseAmount = liquidity.wdiv(15).wmul(14);
                             _mint(repurchaseTo, repurchaseAmount);
                             _mint(feeTo, liquidity.sub(repurchaseAmount));
                         }
@@ -205,9 +205,9 @@ contract UniswapV2Pair is UniswapV2ERC20 {
         uint amount1In = balance1 > _reserve1 - amount1Out ? balance1 - (_reserve1 - amount1Out) : 0;
         require(amount0In > 0 || amount1In > 0, 'UniswapV2: INSUFFICIENT_INPUT_AMOUNT');
         { // scope for reserve{0,1}Adjusted, avoids stack too deep errors
-        uint balance0Adjusted = balance0.mul(1000).sub(amount0In.mul(2)); // 3-->2
-        uint balance1Adjusted = balance1.mul(1000).sub(amount1In.mul(2));// 3-->2
-        require(balance0Adjusted.mul(balance1Adjusted) >= uint(_reserve0).mul(_reserve1).mul(1000**2), 'UniswapV2: K');
+        uint balance0Adjusted = balance0.mul(10000).sub(amount0In.mul(25)); // 3-->2
+        uint balance1Adjusted = balance1.mul(10000).sub(amount1In.mul(25));// 3-->2
+        require(balance0Adjusted.mul(balance1Adjusted) >= uint(_reserve0).mul(_reserve1).mul(10000**2), 'UniswapV2: K');
         }
 
         _update(balance0, balance1, _reserve0, _reserve1);
